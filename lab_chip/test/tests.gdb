@@ -26,19 +26,78 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-# Example test:
-test "PINA: 0x00, PINB: 0x00 => PORTC: 0"
-# Set inputs
-setPINA 0x00
-setPINB 0x00
-# Continue for several ticks
+# Add tests below
+
+test "INCREASE ONCE: PINA: 0x01, 0x00 => PORTC: 8, state = WAIT"
+set state = INIT
+setPINA 0x01
 continue 2
-# Set expect values
-expectPORTC 0
-# Check pass/fail
+setPINA 0x00
+continue 2
+expectPORTC 8
+expect state WAIT
 checkResult
 
-# Add tests below
+
+test "INCREASE 3 more times: PINA: 0x01, 0x00, 0x01, 0x00, 0x01, 0x00 => PORTC: 9, state = WAIT"
+set state = INIT
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 9
+expect state WAIT
+checkResult
+
+test "Decrease once: PINA: 0x02, 0x00 => PORTC: 8, state = WAIT"
+set state = INIT
+setPINA 0x02
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 8
+expect state WAIT
+checkResult
+
+test "RESET to 0: PINA: 0x01, 0x02, 0x00 => PORTC: 0, state = WAIT"
+set state = INIT
+setPINA 0x01
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 0
+expect state WAIT
+checkResult
+
+test "DECREASE at 0: PINA: 0x02, 0x00 => PORTC: 0, state = WAIT"
+set state = INIT
+setPINA 0x02
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 0
+expect state WAIT
+checkResult
+
+test "INCREASE at 0: PINA: 0x01, 0x00 => PORTC: 1, state = WAIT"
+set state = INIT
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 1
+expect state WAIT
+checkResult
 
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed

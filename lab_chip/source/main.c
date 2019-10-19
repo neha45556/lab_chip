@@ -26,8 +26,8 @@ int main(void) {
 	unsigned char A1 = 0x00;
 	
 	while (1) {
-		A0 = PINA & 0x01;
-		A1 = PINA & 0x02;
+		A0 = ~PINA & 0x01;
+		A1 = ~PINA & 0x02;
 		switch(state){
 			case INIT:
 			state = WAIT;
